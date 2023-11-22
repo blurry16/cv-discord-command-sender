@@ -6,7 +6,7 @@ from disnake.ext import commands
 bot = commands.Bot(command_prefix='$', intents=disnake.Intents.all())
 mojang_api = API()
 
-# Admins list.
+# Admins list. (Discord nicknames)
 admins = ['blurry16', 'itsmefred']
 
 # Logging in chat through /msg. (Can be None if you don't want to receive log in chat)
@@ -55,15 +55,16 @@ async def addmember(ctx, nickname):
     for admin in admins:
         if user == admin:
             try:
-                uuid = mojang_api.get_uuid(nickname)
+                uuid = str(mojang_api.get_uuid(nickname))
                 if uuid is not False:
-                    print(f"{user} executed addmember {nickname} slash command.")
+                    print(f"{user} executed addmember {nickname} ({uuid}) slash command.")
                     mcprint(f'/rg addmember {region_name} {nickname}')
                     if msg_recipient is not None:
-                        mcprint(f'/msg {msg_recipient} Player {nickname} was added.')
-                    await ctx.send(f'Added {nickname}')
+                        mcprint(f'/msg {msg_recipient} Player {nickname} ({uuid}) was added.')
+                    await ctx.send(f'Added {nickname} ({uuid})')
                     break
             except:
+                print(f"{user} executed removemember {nickname} slash command (Profile doesn't exits)")
                 await ctx.send(f"This profile doesn't exist. ({nickname})")
                 break
     else:
@@ -79,15 +80,16 @@ async def removemember(ctx, nickname):
     for admin in admins:
         if user == admin:
             try:
-                uuid = mojang_api.get_uuid(nickname)
+                uuid = str(mojang_api.get_uuid(nickname))
                 if uuid is not False:
-                    print(f"{user} executed removemember {nickname} slash command.")
+                    print(f"{user} executed removemember {nickname} ({uuid}) slash command.")
                     mcprint(f'/rg removemember {region_name} {nickname}')
                     if msg_recipient is not None:
-                        mcprint(f'/msg {msg_recipient} Player {nickname} was removed.')
-                    await ctx.send(f'Removed {nickname}')
+                        mcprint(f'/msg {msg_recipient} Player {nickname} ({uuid}) was removed.')
+                    await ctx.send(f'Removed {nickname} ({uuid})')
                     break
             except:
+                print(f"{user} executed removemember {nickname} slash command (Profile doesn't exits)")
                 await ctx.send(f"This profile doesn't exist. ({nickname})")
                 break
 
