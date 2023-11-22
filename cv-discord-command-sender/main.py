@@ -108,12 +108,27 @@ async def helpme(ctx):
                            f'/addmember - the same as /rg addmember blurry16 <nickname>. Just put the nickname and the player will be added\n'
                            f'/removemember - the same as /rg removemember blurry16 <nickname>. Just put the nickname and the player will be removed.\n'
                            f'/rgflag - the same as /rg flag blurry16 <flag_name> <flag_option>. <flag_option> can be not only ALLOW/DENY! It is better to check flags in game before executing this command.\n'
-                           f'The bot will not be on 24/7. It is online only as blurry16 is afk or sleeping.`', ephemeral=True)
+                           f'The bot will not be on 24/7. It is online only when blurry16 is afk or sleeping.`', ephemeral=True)
             break
     else:
         await ctx.send(f'No permissions.', ephemeral=True)
-        print(f'{ctx.user} used /helpme (NO PERMISSIONS)')
+        print(f'{user} used /helpme (NO PERMISSIONS)')
+
+@bot.slash_command(description=f'local chat')
+async def chat(ctx, message):
+    user = str(ctx.user)
+    for admin in admins:
+        if user == admin:
+            print(f"{user} executed /chat {message} command")
+            mcprint(f'~{message}')
+            mcprint(f'/msg blurry16 {user} just used /chat {message} command')
+            await ctx.send(f'Successfully sent')
+            break
+    else:
+        await ctx.send(f'No permissions.', ephemeral=True)
+        print(f'{user} used /chat {message} (NO PERMISSIONS)')
+
 
 # Bot run
 if __name__ == "__main__":
-    bot.run('token')
+    bot.run('MTE2OTQxMjQyOTMxOTUyNDQ1Mg.GqSUQS.ht2D8B20HhJhYat0fGYJVA7Zfx4P8Ac6HgyQTE')
