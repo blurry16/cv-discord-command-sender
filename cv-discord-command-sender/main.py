@@ -131,4 +131,4 @@ async def chat(ctx, message):
 
 # Bot run
 if __name__ == "__main__":
-    bot.run('MTE2OTQxMjQyOTMxOTUyNDQ1Mg.GqSUQS.ht2D8B20HhJhYat0fGYJVA7Zfx4P8Ac6HgyQTE')
+    bot.run('token')
