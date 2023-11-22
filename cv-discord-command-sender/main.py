@@ -127,6 +127,7 @@ async def helpme(ctx):
                            f'/addmember - the same as /rg addmember blurry16 <nickname>. Just put the nickname and the player will be added\n'
                            f'/removemember - the same as /rg removemember blurry16 <nickname>. Just put the nickname and the player will be removed.\n'
                            f'/rgflag - the same as /rg flag blurry16 <flag_name> <flag_option>. <flag_option> can be not only ALLOW/DENY! It is better to check flags in game before executing this command.\n'
+                           f'/chat - local chat using'
                            f'The bot will not be on 24/7. It is online only when blurry16 is afk or sleeping.`', ephemeral=True)
             break
     else:
