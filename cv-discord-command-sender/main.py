@@ -1,8 +1,10 @@
 import keyboard
 import time
 import disnake
+from mojang import API
 from disnake.ext import commands
 bot = commands.Bot(command_prefix='$', intents=disnake.Intents.all())
+mojang_api = API()
 
 # Admins list.
 admins = ['blurry16', 'itsmefred']
@@ -49,14 +51,21 @@ async def on_message(message):
 @bot.slash_command(description=f'# /rg addmember {region_name} [nickname] INGAME')
 async def addmember(ctx, nickname):
     user = str(ctx.user)
+    nickname = str(nickname)
     for admin in admins:
         if user == admin:
-            print(f"{user} executed addmember {nickname} slash command.")
-            mcprint(f'/rg addmember {region_name} {nickname}')
-            if msg_recipient is not None:
-                mcprint(f'/msg {msg_recipient} Player {nickname} was added.')
-            await ctx.send(f'Added {nickname}')
-            break
+            try:
+                uuid = mojang_api.get_uuid(nickname)
+                if uuid is not False:
+                    print(f"{user} executed addmember {nickname} slash command.")
+                    mcprint(f'/rg addmember {region_name} {nickname}')
+                    if msg_recipient is not None:
+                        mcprint(f'/msg {msg_recipient} Player {nickname} was added.')
+                    await ctx.send(f'Added {nickname}')
+                    break
+            except:
+                await ctx.send(f"This profile doesn't exist. ({nickname})")
+                break
     else:
         await ctx.send(f'No permissions.', ephemeral=True)
         print(f'{user} executed addmember {nickname} slash command. (NO PERMISSIONS)')
@@ -66,14 +75,22 @@ async def addmember(ctx, nickname):
 @bot.slash_command(description=f'# /rg removemember {region_name} [nickname] INGAME')
 async def removemember(ctx, nickname):
     user = str(ctx.user)
+    nickname = str(nickname)
     for admin in admins:
         if user == admin:
-            print(f"{user} executed removemember {nickname} slash command.")
-            mcprint(f'/rg removemember {region_name} {nickname}')
-            if msg_recipient is not None:
-                mcprint(f'/msg {msg_recipient} Player {nickname} was removed.')
-            await ctx.send(f'Removed {nickname}')
-            break
+            try:
+                uuid = mojang_api.get_uuid(nickname)
+                if uuid is not False:
+                    print(f"{user} executed removemember {nickname} slash command.")
+                    mcprint(f'/rg removemember {region_name} {nickname}')
+                    if msg_recipient is not None:
+                        mcprint(f'/msg {msg_recipient} Player {nickname} was removed.')
+                    await ctx.send(f'Removed {nickname}')
+                    break
+            except:
+                await ctx.send(f"This profile doesn't exist. ({nickname})")
+                break
+
     else:
         await ctx.send(f'No permissions.', ephemeral=True)
         print(f'{user} executed addmember {nickname} slash command. (NO PERMISSIONS)')
@@ -113,6 +130,7 @@ async def helpme(ctx):
     else:
         await ctx.send(f'No permissions.', ephemeral=True)
         print(f'{user} used /helpme (NO PERMISSIONS)')
+
 
 @bot.slash_command(description=f'local chat')
 async def chat(ctx, message):
