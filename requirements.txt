@@ -1,0 +1,4 @@
+# Python libraries that are needed to launch the bot
+disnake
+time
+keyboard
