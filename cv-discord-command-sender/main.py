@@ -14,6 +14,7 @@ admins = cfg["cfg"]["admins"]
 # Logging in chat through /msg. (Can be None if you don't want to receive log in chat)
 #                                          IDs can be checked with /getuuid command or with NameMC
 msg_recipient = str(mojang_api.get_profile("8eba079e7e9448aa96c06ec4998ab8c3").name)
+# msg_recipient = None
 
 # Name of the region where you want to make changes.
 region_name = "blurry16"
