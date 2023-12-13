@@ -1,6 +1,10 @@
 {
   "cfg": {
     "name": "Magmasia Bot",
-    "token": "YOUR_TOKEN_HERE"
+    "token": "YOUR_TOKEN_HERE",
+    "admins": [
+      "blurry16",
+      "itsmefred"
+    ]
   }
 }
