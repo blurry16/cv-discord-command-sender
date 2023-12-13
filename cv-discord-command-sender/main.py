@@ -1,17 +1,19 @@
 import keyboard
 import time
 import disnake
+import json
 from mojang import API
 from disnake.ext import commands
 bot = commands.Bot(command_prefix='$', intents=disnake.Intents.all())
 mojang_api = API()
+cfg = json.load(open("config.json"))
 
 
-# Admins list. (Discord nicknames)
-admins = ['blurry16', 'itsmefred']
+admins = ["blurry16", "itsmefred"]
 
 # Logging in chat through /msg. (Can be None if you don't want to receive log in chat)
-msg_recipient = "ItzMeFred"
+#                                          IDs can be checked with /getuuid command or with NameMC
+msg_recipient = str(mojang_api.get_profile("8eba079e7e9448aa96c06ec4998ab8c3").name)
 
 # Name of the region where you want to make changes.
 region_name = "blurry16"
@@ -57,12 +59,16 @@ async def helpme(ctx):
             print(f"{user} executed /helpme slash command.")
             await ctx.send(f'`List of commands:\n'
                            f'/helpme - this command :p\n'
-                           f'/addmember - the same as /rg addmember blurry16 <nickname>. Just put the nickname and the player will be added\n'
-                           f'/removemember - the same as /rg removemember blurry16 <nickname>. Just put the nickname and the player will be removed.\n'
-                           f'/rgflag - the same as /rg flag blurry16 <flag_name> <flag_option>. <flag_option> can be not only ALLOW/DENY! It is better to check flags in game before executing this command.\n'
+                           f'/addmember - the same as /rg addmember blurry16 <nickname>. Just put the nickname and the '
+                           f'player will be added\n'
+                           f'/removemember - the same as /rg removemember blurry16 <nickname>. Just put the nickname '
+                           f'and the player will be removed.\n'
+                           f'/rgflag - the same as /rg flag blurry16 <flag_name> <flag_option>. <flag_option> can be '
+                           f'not only ALLOW/DENY! It is better to check flags in game before executing this command.\n'
                            f'/chat - local chat using\n'
                            f'/uuid - get uuid of someone with their mojang nickname\n'
-                           f'The bot will not be on 24/7. It is online only when blurry16 is afk or sleeping.`', ephemeral=True)
+                           f'The bot will not be on 24/7. It is online only when blurry16 is afk or sleeping.`',
+                           ephemeral=True)
             break
     else:
         await ctx.send(f'No permissions.', ephemeral=True)
@@ -149,7 +155,6 @@ async def chat(ctx, message):
         if user == admin:
             print(f"{user} executed /chat {message} command")
             mcprint(f'~{message}')
-            mcprint(f'/msg blurry16 {user} just used /chat {message} command')
             await ctx.send(f'Successfully sent')
             break
     else:
@@ -161,27 +166,21 @@ async def chat(ctx, message):
 @bot.slash_command(description=f'Mojang account UUID getter')
 async def getuuid(ctx, nickname):
     user = str(ctx.user)
-    for admin in admins:
-        if user == admin:
-            print(f'{user} executed /getuuid {nickname} command')
-            try:
-                uuid = str(mojang_api.get_uuid(nickname))
-                if uuid is not False:
-                    profile = mojang_api.get_profile(uuid)
-                    nickname = str(profile.name)
-                    await ctx.send(f'{nickname}\'s UUID is - {uuid}')
-                    print(f'{user} got UUID of {nickname} ({uuid})')
-                break
-            except:
-                await ctx.send(f'This profile does not exist. ({nickname})')
-                print(f'{user} did not get UUID of {nickname}. THIS PROFILE DOES NOT EXIST')
-                break
 
-    else:
-        await ctx.send(f'No permissions.', ephemeral=True)
-        print(f'{user} used /getuuid {nickname} (NO PERMISSIONS)')
+    print(f'{user} executed /getuuid {nickname} command')
+    try:
+        uuid = str(mojang_api.get_uuid(nickname))
+        if uuid is not False:
+            profile = mojang_api.get_profile(uuid)
+            nickname = str(profile.name)
+            await ctx.send(f'{nickname}\'s UUID is - {uuid}')
+            print(f'{user} got UUID of {nickname} ({uuid})')
+
+    except:
+        await ctx.send(f'This profile does not exist. ({nickname})')
+        print(f'{user} did not get UUID of {nickname}. THIS PROFILE DOES NOT EXIST')
 
 
 # Bot run
 if __name__ == "__main__":
-    bot.run('token')
+    bot.run(str(cfg["cfg"]["token"]))
