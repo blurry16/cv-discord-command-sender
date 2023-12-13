@@ -8,8 +8,8 @@ bot = commands.Bot(command_prefix='$', intents=disnake.Intents.all())
 mojang_api = API()
 cfg = json.load(open("config.json"))
 
-
-admins = ["blurry16", "itsmefred"]
+# Admins list (discord nicknames) can be changed in config.json file
+admins = cfg["cfg"]["admins"]
 
 # Logging in chat through /msg. (Can be None if you don't want to receive log in chat)
 #                                          IDs can be checked with /getuuid command or with NameMC
