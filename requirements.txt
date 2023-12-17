@@ -1,5 +1,6 @@
 # Python libraries that are needed to launch the bot
 disnake
-time
+time (should be preinstalled)
 keyboard
 mojang
+json (should be preinstalled)
